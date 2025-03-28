@@ -164,36 +164,6 @@ void CheckName() {
 }
 
 void CheckForUpdates(const std::string& CV) {
-    std::string LatestHash = HTTP::Get("https://backend.beammp.com/sha/launcher?branch=" + Branch + "&pk=" + PublicKey);
-    std::string LatestVersion = HTTP::Get(
-        "https://backend.beammp.com/version/launcher?branch=" + Branch + "&pk=" + PublicKey);
-
-    transform(LatestHash.begin(), LatestHash.end(), LatestHash.begin(), ::tolower);
-    std::string EP(GetEP() + GetEN()), Back(GetEP() + "BeamMP-Launcher.back");
-
-    std::string FileHash = hashpp::get::getFileHash(hashpp::ALGORITHMS::SHA2_256, EP);
-
-    if (FileHash != LatestHash && IsOutdated(Version(VersionStrToInts(GetVer() + GetPatch())), Version(VersionStrToInts(LatestVersion)))) {
-        if (!options.no_update) {
-            info("Launcher update " + LatestVersion + " found!");
-#if defined(__linux__)
-            error("Auto update is NOT implemented for the Linux version. Please update manually ASAP as updates contain security patches.");
-#else
-            fs::remove(Back);
-            fs::rename(EP, Back);
-            info("Downloading Launcher update " + LatestHash);
-            HTTP::Download(
-                "https://backend.beammp.com/builds/launcher?download=true"
-                "&pk="
-                    + PublicKey + "&branch=" + Branch,
-                EP);
-            URelaunch();
-#endif
-        } else {
-            warn("Launcher update was found, but not updating because --no-update or --dev was specified.");
-        }
-    } else
-        info("Launcher version is up to date. Latest version: " + LatestVersion);
     TraceBack++;
 }
 
