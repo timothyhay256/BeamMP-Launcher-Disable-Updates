@@ -301,14 +301,6 @@ void PreGame(const std::string& GamePath) {
 
         std::string FileHash = hashpp::get::getFileHash(hashpp::ALGORITHMS::SHA2_256, ZipPath);
 
-        if (FileHash != LatestHash) {
-            info("Downloading BeamMP Update " + LatestHash);
-            HTTP::Download("https://backend.beammp.com/builds/client?download=true"
-                           "&pk="
-                    + PublicKey + "&branch=" + Branch,
-                ZipPath);
-        }
-
         std::string Target(GetGamePath() + "mods/unpacked/beammp");
 
         if (fs::is_directory(Target)) {
